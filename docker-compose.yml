@@ -1,41 +1,36 @@
 version: "3.9"
 
 services:
-  db:
-    container_name: db
+  postgres:
+    container_name: postgres
     image: postgres:13-alpine
     restart: always
     volumes:
-      - pgdata:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
     env_file: ./library_back/.env-sample
 
-  api:
-    container_name: api
+  django:
+    container_name: django
     build:
       context: ./library_back/
       dockerfile: Dockerfile
     restart: always
     env_file: ./library_back/.env-sample
-    ports:
-      - 8000:8000
     depends_on:
-      - db
+      - postgres
     links:
-      - db
+      - postgres
 
-  web:
-    container_name: web
+  react_build:
+    container_name: react_build
     build:
       context: ./library_front
       dockerfile: Dockerfile
-    restart: always
-    ports:
-      - 3000:3000
-    depends_on:
-      - api
-    links:
-      - api
+    volumes:
+      - react_build_data:/app/build
 
 volumes:
-  pgdata:
-    name: pgdata
+  postgres_data:
+    name: postgres_data
+  react_build_data:
+    name: react_build_data
