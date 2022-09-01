@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import unittest
 from .models import Book
 from .serializers import BookSerializer
