@@ -18,3 +18,26 @@ jobs:
       -
         name: 🐛 Run tests
         run: docker-compose run --rm --entrypoint "./entrypoint.sh test" django
+
+  
+  lint-backend:
+    needs: [test-backend]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./library_back
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      -
+        name: 🧰 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+      -
+        name: 🧹 Run lint
+        run: flake8 . --extend-exclude=migrations --max-line-length=100
