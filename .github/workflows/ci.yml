@@ -41,3 +41,44 @@ jobs:
       -
         name: 🧹 Run lint
         run: flake8 . --extend-exclude=migrations --max-line-length=100
+
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./library_front
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      -
+        name: 🧰 Install dependencies
+        run: yarn install
+      - 
+        name: 🐛 Run tests
+        run: yarn test --ci=true
+
+
+  lint-frontend:
+    needs: [test-frontend]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./library_front
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      -
+        name: 🧰 Install dependencies
+        run: yarn install
+      - 
+        name: 🧹 Run lint
+        run: yarn run eslint
