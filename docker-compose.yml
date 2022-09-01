@@ -23,6 +23,19 @@ services:
     links:
       - db
 
+  web:
+    container_name: web
+    build:
+      context: ./library_front
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    links:
+      - api
+
 volumes:
   pgdata:
     name: pgdata
