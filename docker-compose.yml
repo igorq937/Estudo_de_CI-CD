@@ -9,6 +9,20 @@ services:
       - pgdata:/var/lib/postgresql/data/
     env_file: ./library_back/.env-sample
 
+  api:
+    container_name: api
+    build:
+      context: ./library_back/
+      dockerfile: Dockerfile
+    restart: always
+    env_file: ./library_back/.env-sample
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    links:
+      - db
+
 volumes:
   pgdata:
     name: pgdata
