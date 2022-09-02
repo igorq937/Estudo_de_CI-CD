@@ -79,7 +79,7 @@ jobs:
         run: yarn install
       - 
         name: 🧹 Run lint
-        run: yarn run eslint
+        run: yarn run eslint ./src
 
 
   build:
